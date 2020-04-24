@@ -13,17 +13,22 @@ const ITEM_HEIGHT = 48;
 
 
 const LongMenu = (props) => {
-    const [anchorE1, setAnchorE1] = React.useState(null)
+    const [anchorEl, setAnchorEl] = React.useState(null)
     const [menuOpen, setMenuOpen] = React.useState(false)
 
     const handleClick = (event) => {
-        setAnchorE1(event.currentTarget)
+        setAnchorEl(event.currentTarget)
         setMenuOpen(!menuOpen)
     }
 
     const handleClose = () => {
-        setAnchorE1(null)
+        setAnchorEl(null)
         setMenuOpen(!menuOpen)
+    }
+    
+    const handleClickRemove = () => {
+        handleClose()
+        props.deleteMake()
     }
 
     return (
@@ -38,7 +43,7 @@ const LongMenu = (props) => {
             </IconButton>
             <Menu
                 id='long-menu'
-                anchorE1={anchorE1}
+                anchorEl={anchorEl}
                 getContentAnchorEl={null}
                 anchorOrigin={{vertical:'top', horizontal:'left'}}
                 transformOrigin={{vertical:'top', horizontal:'center'}}
@@ -53,7 +58,7 @@ const LongMenu = (props) => {
                 }}
             >
               {options.map((option, index) => (
-                  <MenuItem key={option} selected ={option === 'Delete'} onClick={ () => props.deleteMake(index, handleClose())} >
+                  <MenuItem key={option} onClick={handleClickRemove} >
                       {option}
                   </MenuItem>
 
@@ -78,7 +83,7 @@ const Import = (props) => {
                          <TableCell>{make.MakeId}</TableCell>
                          <TableCell>{make.MakeName}</TableCell>
                          <TableCell>{make.VehicleTypeName}</TableCell>
-                         <LongMenu onClick={props.handleClick} deleteMake={props.deleteMake}/>
+                         <LongMenu onClick={props.handleClick} deleteMake={() => props.deleteMake(index)}/>
                      </TableRow>
                     ))}
                 </TableBody>
